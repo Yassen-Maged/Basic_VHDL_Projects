@@ -25,11 +25,11 @@ signal smap: segmap := --active low
 	"10000010", --6
 	"11111000", --7
 	"10000000", --8
-	"10010000"--9
+	"10010000"  --9
 );
 signal num: unsigned(9 downto 0); --converting the std_logic_vector to unsigned for arithmatic operations
 signal bcd_reg : unsigned(12 downto 0) := (others => '0'); -- (1 - 4 - 4 - 4) bit per display
-
+							   -- (11111111111)2 => 1024
 begin
 led <= sw;
 num <= unsigned(sw);
@@ -38,7 +38,6 @@ process (num) --we don't need clock here
 variable bcd : unsigned(12 downto 0) := (others => '0');
 begin
 bcd := (others => '0');
-
 	for i in 0 to 9 loop -- we iterate 10 times because we have 10 bits input
 		for j in 0 to 2 loop
 			if bcd(4*j + 3 downto 4 * j) > 4 then --check 4 bits by 4 bits
@@ -47,7 +46,6 @@ bcd := (others => '0');
 		end loop;
 		bcd := bcd(11 downto 0) & num(9 - i); -- shift left by 1 bit
 	end loop;
-
 bcd_reg <= bcd;
 end process;
 
