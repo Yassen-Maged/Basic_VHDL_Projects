@@ -9,9 +9,8 @@ end main_tb;
 architecture beh of main_tb is
 component main is
 generic(
-IV_n: natural := 10; -- the length of the Initial value used in key generation.
-n: natural := 8 -- the length of the plain/cipher text.
-);
+IV_n: natural := 10;
+n: natural := 8);
 port(
 CLK: in std_logic;
 Encrypt: in std_logic:= '1'; -- '1' for encrypt and '0' for decrypt.
@@ -20,7 +19,7 @@ input_word: in std_logic_vector(0 to n-1):= (others => 'Z'); -- 8 Switches.
 output_word: out std_logic_vector(0 to n-1):= (others => 'Z')-- 8 LEDs.
 );
 end component;
-signal clk,encrypt_led: std_logic:= '0';
+signal clk: std_logic:= '0';
 signal encrypt: std_logic:= '1';
 signal in_word,out_word: std_logic_vector(0 to n-1):= (others => '0');
 signal err: boolean := false; -- error indicator.
@@ -29,7 +28,6 @@ begin
 u0: main port map(
 clk => clk,
 Encrypt => Encrypt,
-Encrypt_LED => Encrypt_LED,
 input_word => in_word,
 output_word => out_word
 );
