@@ -133,7 +133,7 @@ constant P4: perm:= (2,4,3,1,0,0,0,0,0,0);
 ----------------------------------------------------------------
 
 begin
-
+Encrypt_LED <= Encrypt;
 process(clk)
 variable temp: std_logic_vector(0 to n-1):= (others => '0'); -- stores the first round output.
 begin
