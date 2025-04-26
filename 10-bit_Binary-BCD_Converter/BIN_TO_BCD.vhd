@@ -7,7 +7,6 @@ generic(N: natural:= 10; -- data width.
 BCD_N: natural :=4*4 -- 4 * Number of 7SEG displays (for 10-bit numbers, it's 4*4 = 16)
 );
 port(
-clk,reset: in std_logic;
 binary_in: in std_logic_vector(n-1 downto 0);
 HEX0,HEX1,HEX2,HEX3: out std_logic_vector(7 downto 0)
 );
