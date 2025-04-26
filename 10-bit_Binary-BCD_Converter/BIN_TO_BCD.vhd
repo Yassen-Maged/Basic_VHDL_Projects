@@ -3,8 +3,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity bin_to_bcd is
-generic(n: natural:= 10; -- input-data width
-BCD_N: natural :=13 -- (1 - 4 - 4 - 4) bits per display for 10-bit binary number
+generic(N: natural:= 10; -- data width.
+BCD_N: natural :=4*4 -- 4 * Number of 7SEG displays (for 10-bit numbers, it's 4*4 = 16)
 );
 port(
 clk,reset: in std_logic;
@@ -28,7 +28,7 @@ constant smap: segmap := --active low
 	"10000000", --8
 	"10010000"--9
 );
-signal num: unsigned(n-1 downto 0); --converting the std_logic_vector to unsigned for arithmatic operations
+signal num: unsigned(n-1 downto 0); --converting to unsigned for arithmatic operations
 signal bcd_reg : unsigned(BCD_N -1 downto 0) := (others => '0'); 
 begin
 num <= unsigned(binary_in);
@@ -38,9 +38,9 @@ process (num) --I made it async design, but if you want to make it sync,
 variable bcd : unsigned(BCD_N-1 downto 0) := (others => '0');
 begin
 bcd := (others => '0');
-	for i in 0 to n-1 loop -- we iterate N times because we have N bits input
-		for j in 0 to 2 loop
-			if bcd(4*j + 3 downto 4 * j) > 4 then --check 4 bits by 4 bits
+	for i in 0 to n-1 loop -- we iterate N times because we have N bits input.
+		for j in 0 to BCD_N/4 -1 loop -- we iterate as many times as the number of 7SEG displays.
+			if bcd(4*j + 3 downto 4 * j) > 4 then --check 4 bits by 4 bits.
 				bcd(4*j + 3 downto 4 * j) := bcd(4*j + 3 downto 4 * j) + 3; -- add 3
 			end if;
 		end loop;
@@ -54,6 +54,6 @@ begin
 hex0 <= smap(to_integer(bcd_reg(3 downto 0)));	--ones
 hex1 <= smap(to_integer(bcd_reg(7 downto 4)));	--tens
 hex2 <= smap(to_integer(bcd_reg(11 downto 8)));	--hundreds
-hex3 <= smap(to_integer(bcd_reg(12 downto 12)));--thousands
+hex3 <= smap(to_integer(bcd_reg(15 downto 12)));--thousands
 end process;
 end beh;
