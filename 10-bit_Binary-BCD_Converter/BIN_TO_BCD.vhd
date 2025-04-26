@@ -3,8 +3,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity bin_to_bcd is
-generic(N: natural:= 10;
-BCD_N: natural :=13 -- (1 - 4 - 4 - 4) bits per display for 16-bit binary number
+generic(n: natural:= 10; -- input-data width
+BCD_N: natural :=13 -- (1 - 4 - 4 - 4) bits per display for 10-bit binary number
 );
 port(
 clk,reset: in std_logic;
