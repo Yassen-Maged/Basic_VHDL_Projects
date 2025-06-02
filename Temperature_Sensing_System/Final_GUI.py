@@ -1,4 +1,4 @@
-# This GUI is made by Eng. Haitham Ramadan
+# This GUI was made by Eng. Haitham Ramadan
 # https://www.linkedin.com/in/haitham-ramadan-alyamani/
 import sys
 import os
