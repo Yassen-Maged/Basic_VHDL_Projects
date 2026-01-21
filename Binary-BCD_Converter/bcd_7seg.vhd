@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 entity bcd_7seg is
 generic(d_width: natural:= 3; -- data width.
-n_display: natural :=1 -- Number of 7SEG displays (i.e. for 10-bit numbers, it's 4 displays)
+n_display: natural:= 1 -- Number of 7SEG displays (i.e. for 10-bit numbers, it's 4 displays)
 );
 port(
 binary_in: in std_logic_vector(d_width-1 downto 0);
@@ -13,7 +13,7 @@ HEX: out std_logic_vector(4*n_display-1 downto 0)
 end bcd_7seg;
 
 architecture beh of bcd_7seg is
-constant BCD_N: natural :=4*n_display; --4 * Number of 7SEG displays (for 10-bit numbers, it's 4*4 = 16)
+constant BCD_N: natural:= 4*n_display; --4 * Number of 7SEG displays (for 10-bit numbers, it's 4*4 = 16)
 type segmap is array (0 to 9) of std_logic_vector (7 downto 0); -- binary to 7-seg map
 constant smap: segmap := --active low
 ( --Pgfedcba
@@ -28,8 +28,8 @@ constant smap: segmap := --active low
 	"10000000", --8
 	"10010000"--9
 );
-signal num: unsigned(d_width-1 downto 0); --converting to unsigned for arithmatic operations
-signal bcd_reg : unsigned(BCD_N -1 downto 0) := (others => '0'); 
+signal num: unsigned(d_width-1 downto 0):= (others => '0');  --converting to unsigned for arithmatic operations
+signal bcd_reg : unsigned(BCD_N -1 downto 0):= (others => '0'); 
 begin
 num <= unsigned(binary_in);
 
@@ -52,7 +52,8 @@ end process;
 process(bcd_reg) --map the BCD number to 7-SEG displays
 begin
 for i in 0 to n_display-1 loop
-	HEX(i+3 downto i) <= smap(to_integer(bcd_reg(i+3 downto i)));
+	HEX(i*4 + 3 downto i*4) <= smap(to_integer(bcd_reg(i*4 + 3 downto i*4)));
 end loop;
 end process;
+
 end beh;
