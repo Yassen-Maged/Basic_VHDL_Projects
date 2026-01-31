@@ -4,11 +4,11 @@ use ieee.numeric_std.all;
 
 entity bcd_7seg is
 generic(d_width: natural:= 3; -- data width.
-n_display: natural :=1 -- Number of 7SEG displays (i.e. for 10-bit numbers, it's 4 displays)
+n_display: natural:= 1 -- Number of 7SEG displays (i.e. for 10-bit numbers, it's 4 displays)
 );
 port(
-binary_in: in std_logic_vector(d_width-1 downto 0);
-HEX: out std_logic_vector(8*n_display-1 downto 0)
+binary_in: in std_logic_vector(d_width-1 downto 0) := (others => '0');
+HEX: out std_logic_vector(8*n_display-1 downto 0) := (others => '0')
 );
 end bcd_7seg;
 
@@ -57,3 +57,4 @@ end loop;
 end process;
 
 end beh;
+
