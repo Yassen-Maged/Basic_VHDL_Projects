@@ -4,11 +4,11 @@ use ieee.numeric_std.all;
 
 entity bcd_7seg is
 generic(d_width: natural:= 3; -- data width.
-n_display: natural:= 1 -- Number of 7SEG displays (i.e. for 10-bit numbers, it's 4 displays)
+n_display: natural :=1 -- Number of 7SEG displays (i.e. for 10-bit numbers, it's 4 displays)
 );
 port(
-binary_in: in std_logic_vector(d_width-1 downto 0) := (others => '0');
-HEX: out std_logic_vector(8*n_display-1 downto 0) := (others => '0')
+binary_in: in std_logic_vector(d_width-1 downto 0):= (others => '0');
+HEX: out std_logic_vector(8*n_display-1 downto 0):= (others => '0')
 );
 end bcd_7seg;
 
@@ -28,10 +28,20 @@ constant smap: segmap := --active low
 	"10000000", --8
 	"10010000"	--9
 );
-signal num: unsigned(d_width-1 downto 0); --converting to unsigned for arithmatic operations
-signal bcd_reg : unsigned(BCD_N -1 downto 0) := (others => '0'); 
+signal num: unsigned(d_width-1 downto 0):= (others => '0'); --converting to unsigned for arithmatic operations
+signal bcd_reg : unsigned(BCD_N -1 downto 0):= (others => '0'); 
 begin
-num <= unsigned(binary_in);
+
+process(binary_in) --forcing validity. mitigate having 'Z', 'X', 'U'.
+begin --num <= unsigned(binary_in);
+for i in 0 to d_width -1 loop
+	if binary_in(i) = '1' then
+		num(i) <= '1';
+	else
+		num(i) <= '0';
+	end if;
+end loop;
+end process;
 
 process (num) --I made it async design, but if you want to make it sync,
 			  --you can make it sensitive to the rising_edge of the clock.
@@ -57,4 +67,3 @@ end loop;
 end process;
 
 end beh;
-
